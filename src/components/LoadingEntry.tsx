@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
+import { useData } from "../context/DataContext";
 
 export default function LoadingEntry({ onComplete }: { onComplete: () => void }) {
+  const { data } = useData();
   const [step, setStep] = useState(-1);
   const [isVisible, setIsVisible] = useState(true);
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
@@ -34,7 +36,7 @@ export default function LoadingEntry({ onComplete }: { onComplete: () => void })
     const t0 = setTimeout(() => setStep(0), 50);    // Background & Particles start
     const t1 = setTimeout(() => setStep(1), 400);   // Logo reveal & Glow
     const t2 = setTimeout(() => setStep(2), 800);   // Company name & subtitle
-    const t3 = setTimeout(() => setStep(3), 1200);  // "Build. Automate. Grow."
+    const t3 = setTimeout(() => setStep(3), 1200);  // Dynamic title
     const t4 = setTimeout(() => setStep(4), 2000);  // Fade out screen
     const t5 = setTimeout(() => {
       setIsVisible(false);
@@ -55,6 +57,7 @@ export default function LoadingEntry({ onComplete }: { onComplete: () => void })
       className={`fixed inset-0 z-[100] flex flex-col items-center justify-center bg-background transition-opacity duration-500 ease-in-out overflow-hidden ${
         step === 4 ? 'opacity-0 pointer-events-none' : 'opacity-100'
       }`}
+      style={{ '--accent-color': data.animations?.primaryColor || '#F58220' } as React.CSSProperties}
     >
       {/* Step 1 & 2: Subtle Particle / Digital Lines Background */}
       {!prefersReducedMotion && (
@@ -124,7 +127,7 @@ export default function LoadingEntry({ onComplete }: { onComplete: () => void })
           step >= 3 ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
         }`}>
           <span className="text-[14px] sm:text-[15px] font-medium text-accent border border-accent/20 bg-accent/5 px-4 py-1.5 rounded-full">
-            Build. Automate. Grow.
+            {data.hero.title || "Build. Automate. Grow."}
           </span>
         </div>
 

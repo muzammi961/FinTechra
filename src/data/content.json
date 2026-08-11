@@ -1,0 +1,197 @@
+{
+  "theme": {
+    "light": {
+      "background": "#ffffff",
+      "text": "#ce6969",
+      "accent": "#1f5ff4"
+    },
+    "dark": {
+      "background": "#000B18",
+      "text": "#ffffff",
+      "accent": "#1ff45f"
+    }
+  },
+  "animations": {
+    "primaryColor": "#be3c49"
+  },
+  "hero": {
+    "subtitle": "Digital • AI • Financial Solutions",
+    "title": "Build. Automate. Grow.",
+    "description": "FinTechra Solutions brings digital development, AI-powered solutions and essential financial services together to help businesses move forward with confidence."
+  },
+  "services": {
+    "section_title": "Core Services",
+    "section_description": "Everything Your Business Needs to Grow\n\nFrom digital experiences to financial services, we provide practical solutions designed around your business.",
+    "items": [
+      {
+        "title": "Custom Website Development",
+        "description": "Modern, responsive and high-performance websites designed specifically for your business."
+      },
+      {
+        "title": "E-Commerce Solutions",
+        "description": "Complete e-commerce solutions that help businesses sell, manage orders and grow online."
+      },
+      {
+        "title": "AI-Powered Web Solutions",
+        "description": "Integrate AI into your website and business processes to automate tasks, improve customer experiences and work smarter."
+      },
+      {
+        "title": "GST Registration & Filing",
+        "description": "Professional GST registration and filing support to help businesses manage their GST requirements."
+      },
+      {
+        "title": "Income Tax Return (ITR) Filing",
+        "description": "Reliable income tax return filing support for individuals and businesses."
+      },
+      {
+        "title": "Accounting & Bookkeeping Services",
+        "description": "Organize your financial records, maintain your books and keep your business finances easier to manage."
+      }
+    ]
+  },
+  "about": {
+    "title": "About FinTechra Solutions",
+    "heading": "Technology & Financial Solutions, Built Around Your Business",
+    "description1": "FinTechra Solutions brings digital development, AI-powered solutions and essential financial services together to help businesses move forward with confidence.",
+    "description2": "We bridge the gap between technical innovation and financial stability, giving you a single partner to handle your most critical business needs.",
+    "stats": [
+      {
+        "value": "150+",
+        "label": "Digital Projects Completed"
+      },
+      {
+        "value": "500+",
+        "label": "Tax Returns Filed"
+      },
+      {
+        "value": "98%",
+        "label": "Client Retention Rate"
+      }
+    ]
+  },
+  "digitalSolutions": {
+    "title": "Digital Solutions",
+    "heading": "Build Your Digital Presence",
+    "description": "We design and develop powerful digital tools to help your business operate more efficiently and connect with your audience.",
+    "items": [
+      "Websites, web applications and e-commerce solutions.",
+      "AI-powered tools, automation and intelligent web solutions.",
+      "Responsive design and scalable architecture."
+    ]
+  },
+  "financialServices": {
+    "title": "Financial Services",
+    "heading": "Keep Your Finances on Track",
+    "description": "Stay compliant and keep your finances organized with our professional accounting and tax services.",
+    "items": [
+      "Accounting, GST and income tax services.",
+      "Timely Filing & Reporting",
+      "Expert Advisory Support"
+    ]
+  },
+  "whyChooseUs": {
+    "title": "Why Us",
+    "heading": "Why Choose FinTechra Solutions?",
+    "description": "We bring together the technical expertise to build your digital presence and the financial knowledge to keep your business running smoothly.",
+    "features": [
+      {
+        "title": "CUSTOM-BUILT SOLUTIONS",
+        "description": "Solutions designed around your business requirements."
+      },
+      {
+        "title": "MODERN TECHNOLOGY",
+        "description": "Modern web technologies and AI-powered solutions."
+      },
+      {
+        "title": "BUSINESS-FOCUSED",
+        "description": "We focus on practical solutions that support real business needs."
+      },
+      {
+        "title": "ONE PARTNER",
+        "description": "Digital and financial services from one company."
+      }
+    ]
+  },
+  "howWeWork": {
+    "title": "Process",
+    "heading": "How We Work",
+    "steps": [
+      {
+        "title": "Consultation",
+        "description": "We start by understanding your business needs."
+      },
+      {
+        "title": "Planning",
+        "description": "We create a customized plan for your project."
+      },
+      {
+        "title": "Execution",
+        "description": "Our experts build, test, and deploy your solution."
+      },
+      {
+        "title": "Support",
+        "description": "Ongoing support to ensure everything runs smoothly."
+      }
+    ]
+  },
+  "whoWeServe": {
+    "title": "Who We Serve",
+    "heading": "Solutions for Businesses at Every Stage",
+    "description": "",
+    "industries": [
+      {
+        "title": "STARTUPS",
+        "description": "Build a strong digital foundation."
+      },
+      {
+        "title": "SMALL BUSINESSES",
+        "description": "Create a professional online presence and simplify business operations."
+      },
+      {
+        "title": "GROWING BUSINESSES",
+        "description": "Scale through digital solutions, e-commerce and automation."
+      },
+      {
+        "title": "ENTERPRISES",
+        "description": "Build customized systems and intelligent digital workflows."
+      }
+    ]
+  },
+  "showcase": {
+    "title": "Interactive Showcase",
+    "heading": "See our solutions in action",
+    "items": [
+      {
+        "title": "Modern Business Website",
+        "color": "#F26522"
+      },
+      {
+        "title": "E-Commerce Storefront",
+        "color": "#3b82f6"
+      },
+      {
+        "title": "AI Customer Assistant",
+        "color": "#8b5cf6",
+        "image": "https://cdn.pixabay.com/photo/2017/07/24/19/57/tiger-2535888_640.jpg"
+      },
+      {
+        "title": "Business Analytics Dashboard",
+        "color": "#10b981"
+      },
+      {
+        "title": "Accounting Portal",
+        "color": "#f59e0b"
+      },
+      {
+        "title": "Financial Document Manager",
+        "color": "#ef4444"
+      }
+    ]
+  },
+  "contact": {
+    "phone1": "6235834570",
+    "phone2": "9778726809",
+    "email1": "fintechrasolutions@gmail.com",
+    "email2": "FinTechraSolutions@outlook.com"
+  }
+}

@@ -13,25 +13,25 @@ html, body, #root {
 }
 
 :root {
-  --bg-color: #ffffff;
-  --text-color: #111827; /* gray-900 */
-  --text-secondary: #4b5563; /* gray-600 */
-  --card-bg: #ffffff;
-  --accent-color: #F26522; /* Orange */
-  --accent-hover: #e05a1a;
-  --border-color: #e5e7eb; /* gray-200 */
-  --header-bg: #ffffff;
+  --bg-color: var(--dynamic-bg-light, #ffffff);
+  --text-color: var(--dynamic-text-light, #111827);
+  --text-secondary: #4b5563;
+  --card-bg: var(--dynamic-bg-light, #ffffff);
+  --accent-color: var(--dynamic-accent-light, #F26522);
+  --accent-hover: var(--dynamic-accent-light, #e05a1a);
+  --border-color: #e5e7eb;
+  --header-bg: var(--dynamic-bg-light, #ffffff);
 }
 
 html.dark:root {
-  --bg-color: #0B1120; /* Deep navy / near black */
-  --text-color: #f3f4f6; /* gray-100 */
-  --text-secondary: #9ca3af; /* gray-400 */
-  --card-bg: #1e293b; /* slate-800 */
-  --accent-color: #F26522; /* Orange */
-  --accent-hover: #e05a1a;
-  --border-color: #334155; /* slate-700 */
-  --header-bg: #0f172a;
+  --bg-color: var(--dynamic-bg-dark, #0B1120);
+  --text-color: var(--dynamic-text-dark, #f3f4f6);
+  --text-secondary: #9ca3af;
+  --card-bg: var(--dynamic-bg-dark, #1e293b);
+  --accent-color: var(--dynamic-accent-dark, #F26522);
+  --accent-hover: var(--dynamic-accent-dark, #e05a1a);
+  --border-color: #334155;
+  --header-bg: var(--dynamic-bg-dark, #0f172a);
 }
 
 body {

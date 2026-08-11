@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Menu, X } from "lucide-react";
 import ThemeToggle from "./ThemeToggle";
 
-const NAV_LINKS = ["Home", "About", "Services", "Solutions", "Why Us", "Contact"];
+const NAV_LINKS = ["Home", "About", "Services", "Solutions", "Why Us", "Process", "Industries", "Contact"];
 
 const EASE = "cubic-bezier(0.25,0.1,0.25,1)";
 

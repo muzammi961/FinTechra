@@ -1,8 +1,11 @@
 import { MessageCircle } from "lucide-react";
 import Navbar from "./Navbar";
 import HeroShader from "./HeroShader";
+import { useData } from "../context/DataContext";
 
 export default function Hero() {
+  const { data } = useData();
+
   return (
     <section id="home" className="relative min-h-screen bg-background flex flex-col overflow-hidden transition-colors duration-300">
       <HeroShader />
@@ -15,15 +18,15 @@ export default function Hero() {
 
       <div className="relative z-20 max-w-[1440px] mx-auto w-full px-5 sm:px-8 lg:px-12 pb-14 sm:pb-16 lg:pb-20">
         <p className="text-[14px] sm:text-[16px] text-textSecondary font-medium tracking-wide mb-4">
-          Digital & Financial Solutions for Modern Businesses
+          {data.hero.subtitle}
         </p>
 
         <h1 className="hero-heading font-medium leading-[1.08] tracking-[-0.03em] text-text mb-6">
-          Build. Automate. Grow.
+          {data.hero.title}
         </h1>
 
         <p className="text-[16px] sm:text-[18px] text-textSecondary max-w-2xl leading-relaxed">
-          FinTechra Solutions helps businesses build powerful digital experiences, integrate AI, and manage essential financial and tax services under one roof.
+          {data.hero.description}
         </p>
 
         <div className="mt-8 sm:mt-10 flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-5">

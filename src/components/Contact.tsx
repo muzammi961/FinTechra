@@ -1,7 +1,9 @@
 import { useState } from "react";
 import { Phone, Mail, MessageCircle, ArrowRight } from "lucide-react";
+import { useData } from "../context/DataContext";
 
 export default function Contact() {
+  const { data } = useData();
   const [formData, setFormData] = useState({
     name: '',
     phone: '',
@@ -14,7 +16,7 @@ export default function Contact() {
     e.preventDefault();
     const subject = `New Inquiry from ${formData.name} - ${formData.service}`;
     const body = `Name: ${formData.name}\nPhone: ${formData.phone}\nEmail: ${formData.email}\nService: ${formData.service}\n\nMessage:\n${formData.message}`;
-    window.location.href = `mailto:fintechrasolutions@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    window.location.href = `mailto:${data.contact.email1}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
   };
 
   return (
@@ -69,17 +71,17 @@ export default function Contact() {
               <div>
                 <h4 className="text-[13px] font-bold tracking-widest text-textSecondary uppercase mb-4">Phone</h4>
                 <div className="flex flex-col gap-3">
-                  <a href="tel:6235834570" className="flex items-center gap-3 text-text hover:text-accent transition-colors text-[17px] font-medium group">
+                  <a href={`tel:${data.contact.phone1}`} className="flex items-center gap-3 text-text hover:text-accent transition-colors text-[17px] font-medium group">
                     <div className="w-10 h-10 rounded-full bg-background border border-borderBase flex items-center justify-center group-hover:border-accent transition-colors">
                       <Phone size={18} className="text-accent" />
                     </div>
-                    6235834570
+                    {data.contact.phone1}
                   </a>
-                  <a href="tel:9778726809" className="flex items-center gap-3 text-text hover:text-accent transition-colors text-[17px] font-medium group">
+                  <a href={`tel:${data.contact.phone2}`} className="flex items-center gap-3 text-text hover:text-accent transition-colors text-[17px] font-medium group">
                     <div className="w-10 h-10 rounded-full bg-background border border-borderBase flex items-center justify-center group-hover:border-accent transition-colors">
                       <Phone size={18} className="text-accent" />
                     </div>
-                    9778726809
+                    {data.contact.phone2}
                   </a>
                 </div>
               </div>
@@ -87,17 +89,17 @@ export default function Contact() {
               <div>
                 <h4 className="text-[13px] font-bold tracking-widest text-textSecondary uppercase mb-4">Email</h4>
                 <div className="flex flex-col gap-3">
-                  <a href="mailto:fintechrasolutions@gmail.com" className="flex items-center gap-3 text-text hover:text-accent transition-colors text-[16px] font-medium group">
+                  <a href={`mailto:${data.contact.email1}`} className="flex items-center gap-3 text-text hover:text-accent transition-colors text-[16px] font-medium group">
                     <div className="w-10 h-10 rounded-full bg-background border border-borderBase flex items-center justify-center group-hover:border-accent transition-colors shrink-0">
                       <Mail size={18} className="text-accent" />
                     </div>
-                    <span className="break-all">fintechrasolutions@gmail.com</span>
+                    <span className="break-all">{data.contact.email1}</span>
                   </a>
-                  <a href="mailto:FinTechraSolutions@outlook.com" className="flex items-center gap-3 text-text hover:text-accent transition-colors text-[16px] font-medium group">
+                  <a href={`mailto:${data.contact.email2}`} className="flex items-center gap-3 text-text hover:text-accent transition-colors text-[16px] font-medium group">
                     <div className="w-10 h-10 rounded-full bg-background border border-borderBase flex items-center justify-center group-hover:border-accent transition-colors shrink-0">
                       <Mail size={18} className="text-accent" />
                     </div>
-                    <span className="break-all">FinTechraSolutions@outlook.com</span>
+                    <span className="break-all">{data.contact.email2}</span>
                   </a>
                 </div>
               </div>

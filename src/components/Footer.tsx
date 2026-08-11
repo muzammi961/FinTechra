@@ -1,6 +1,8 @@
 import { Phone, Mail, MessageCircle, ArrowRight } from "lucide-react";
+import { useData } from "../context/DataContext";
 
 export default function Footer() {
+  const { data } = useData();
   const currentYear = new Date().getFullYear();
 
   return (
@@ -19,13 +21,13 @@ export default function Footer() {
               Digital, AI and financial solutions designed to help businesses move forward.
             </p>
             <div className="flex gap-4 mt-2">
-              <a href="tel:6235834570" className="w-10 h-10 rounded-full bg-background border border-borderBase flex items-center justify-center text-textSecondary hover:text-accent hover:border-accent transition-colors" aria-label="Call Us">
+              <a href={`tel:${data.contact.phone1}`} className="w-10 h-10 rounded-full bg-background border border-borderBase flex items-center justify-center text-textSecondary hover:text-accent hover:border-accent transition-colors" aria-label="Call Us">
                 <Phone size={18} />
               </a>
-              <a href="mailto:fintechrasolutions@gmail.com" className="w-10 h-10 rounded-full bg-background border border-borderBase flex items-center justify-center text-textSecondary hover:text-accent hover:border-accent transition-colors" aria-label="Email Us">
+              <a href={`mailto:${data.contact.email1}`} className="w-10 h-10 rounded-full bg-background border border-borderBase flex items-center justify-center text-textSecondary hover:text-accent hover:border-accent transition-colors" aria-label="Email Us">
                 <Mail size={18} />
               </a>
-              <a href="https://wa.me/9778726809" target="_blank" rel="noreferrer" className="w-10 h-10 rounded-full bg-background border border-borderBase flex items-center justify-center text-textSecondary hover:text-[#25D366] hover:border-[#25D366] transition-colors" aria-label="WhatsApp Us">
+              <a href={`https://wa.me/${data.contact.phone2}`} target="_blank" rel="noreferrer" className="w-10 h-10 rounded-full bg-background border border-borderBase flex items-center justify-center text-textSecondary hover:text-[#25D366] hover:border-[#25D366] transition-colors" aria-label="WhatsApp Us">
                 <MessageCircle size={18} />
               </a>
             </div>
@@ -60,25 +62,25 @@ export default function Footer() {
             <h4 className="text-[13px] font-bold tracking-widest text-text mb-6 uppercase">Contact</h4>
             <ul className="flex flex-col gap-5">
               <li>
-                <a href="tel:6235834570" className="group flex items-center gap-3">
-                  <span className="text-[15px] text-textSecondary group-hover:text-accent transition-colors">6235834570</span>
+                <a href={`tel:${data.contact.phone1}`} className="group flex items-center gap-3">
+                  <span className="text-[15px] text-textSecondary group-hover:text-accent transition-colors">{data.contact.phone1}</span>
                   <ArrowRight size={14} className="text-accent opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all" />
                 </a>
               </li>
               <li>
-                <a href="tel:9778726809" className="group flex items-center gap-3">
-                  <span className="text-[15px] text-textSecondary group-hover:text-accent transition-colors">9778726809</span>
+                <a href={`tel:${data.contact.phone2}`} className="group flex items-center gap-3">
+                  <span className="text-[15px] text-textSecondary group-hover:text-accent transition-colors">{data.contact.phone2}</span>
                   <ArrowRight size={14} className="text-accent opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all" />
                 </a>
               </li>
               <li className="pt-2">
-                <a href="mailto:fintechrasolutions@gmail.com" className="group flex items-center gap-3">
-                  <span className="text-[15px] text-textSecondary group-hover:text-accent transition-colors break-all">fintechrasolutions@gmail.com</span>
+                <a href={`mailto:${data.contact.email1}`} className="group flex items-center gap-3">
+                  <span className="text-[15px] text-textSecondary group-hover:text-accent transition-colors break-all">{data.contact.email1}</span>
                 </a>
               </li>
               <li>
-                <a href="mailto:FinTechraSolutions@outlook.com" className="group flex items-center gap-3">
-                  <span className="text-[15px] text-textSecondary group-hover:text-accent transition-colors break-all">FinTechraSolutions@outlook.com</span>
+                <a href={`mailto:${data.contact.email2}`} className="group flex items-center gap-3">
+                  <span className="text-[15px] text-textSecondary group-hover:text-accent transition-colors break-all">{data.contact.email2}</span>
                 </a>
               </li>
             </ul>

@@ -1,9 +1,11 @@
 import { MessageCircle } from "lucide-react";
+import { useData } from "../context/DataContext";
 
 export default function WhatsAppButton() {
+  const { data } = useData();
   return (
     <a
-      href="https://wa.me/9778726809?text=Hello%20FinTechra%20Solutions%2C%20I%20would%20like%20to%20know%20more%20about%20your%20services."
+      href={`https://wa.me/${data.contact.phone2}?text=Hello%20FinTechra%20Solutions%2C%20I%20would%20like%20to%20know%20more%20about%20your%20services.`}
       target="_blank"
       rel="noreferrer"
       className="fixed bottom-6 right-6 z-50 flex items-center justify-center w-14 h-14 bg-[#25D366] text-white rounded-full shadow-lg hover:bg-[#20bd5a] hover:-translate-y-1 transition-all duration-300 group"

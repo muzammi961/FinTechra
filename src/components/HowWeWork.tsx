@@ -1,46 +1,35 @@
 import { useState, useEffect } from "react";
-import { MessageSquare, LayoutTemplate, Code, Headset } from "lucide-react";
+import { MessageSquare, LayoutTemplate, Code, Headset, CircleDot } from "lucide-react";
+import { useData } from "../context/DataContext";
 
-const steps = [
-  {
-    num: "01",
-    title: "Understand",
-    description: "Understand your business, goals and requirements.",
-    icon: MessageSquare,
-  },
-  {
-    num: "02",
-    title: "Plan",
-    description: "Define the right technology or service solution.",
-    icon: LayoutTemplate,
-  },
-  {
-    num: "03",
-    title: "Build & Implement",
-    description: "Develop, configure and implement the solution.",
-    icon: Code,
-  },
-  {
-    num: "04",
-    title: "Support",
-    description: "Provide continued assistance and improvements.",
-    icon: Headset,
-  },
-];
+const ICONS = [MessageSquare, LayoutTemplate, Code, Headset, CircleDot];
 
 export default function HowWeWork() {
+  const { data } = useData();
+  const content = data.howWeWork;
+  const steps = content.steps || [];
+
   const [activeStep, setActiveStep] = useState(0);
 
-  // Simple auto-rotation for the animated process effect
+  // Auto-rotation for the animated process effect
   useEffect(() => {
+    if (steps.length === 0) return;
+    
     const interval = setInterval(() => {
       setActiveStep((prev) => (prev + 1) % steps.length);
     }, 4000);
     return () => clearInterval(interval);
-  }, []);
+  }, [steps.length]);
+
+  if (steps.length === 0) {
+    return null;
+  }
+
+  // Calculate rotation angle dynamically based on total steps
+  const rotationDegrees = 360 / steps.length;
 
   return (
-    <section className="bg-background pt-16 sm:pt-20 lg:pt-28 pb-16 sm:pb-20 lg:pb-28 border-b border-borderBase transition-colors duration-300">
+    <section id="process" className="bg-background pt-16 sm:pt-20 lg:pt-28 pb-16 sm:pb-20 lg:pb-28 border-b border-borderBase transition-colors duration-300">
       <div className="max-w-[1440px] mx-auto">
         <div className="px-5 sm:px-8 lg:px-12 flex flex-col items-center text-center mb-16 sm:mb-24">
           <div className="flex items-center gap-3 mb-6">
@@ -48,12 +37,12 @@ export default function HowWeWork() {
               6
             </span>
             <span className="text-[12px] sm:text-[13px] font-medium border border-borderBase text-textSecondary rounded-full px-3 sm:px-4 py-1 sm:py-1.5">
-              Process
+              {content.title}
             </span>
           </div>
 
           <h2 className="hero-heading font-medium leading-[1.08] tracking-[-0.03em] text-text mb-6">
-            How We Work
+            {content.heading}
           </h2>
         </div>
 
@@ -64,6 +53,9 @@ export default function HowWeWork() {
             <div className="w-full lg:w-1/2 flex flex-col gap-4">
               {steps.map((step, index) => {
                 const isActive = activeStep === index;
+                const Icon = ICONS[index % ICONS.length];
+                const num = (index + 1).toString().padStart(2, "0");
+                
                 return (
                   <div 
                     key={index}
@@ -78,12 +70,12 @@ export default function HowWeWork() {
                       <div className={`w-12 h-12 rounded-full flex items-center justify-center shrink-0 transition-colors duration-300 ${
                         isActive ? 'bg-accent text-white' : 'bg-card border border-borderBase text-textSecondary'
                       }`}>
-                        <step.icon className="w-5 h-5" />
+                        <Icon className="w-5 h-5" />
                       </div>
                       <div>
                         <div className="flex items-baseline gap-3 mb-1">
                           <span className={`text-sm font-bold ${isActive ? 'text-accent' : 'text-textSecondary'}`}>
-                            {step.num}
+                            {num}
                           </span>
                           <h3 className={`text-lg font-semibold transition-colors duration-300 ${
                             isActive ? 'text-text' : 'text-textSecondary'
@@ -111,20 +103,23 @@ export default function HowWeWork() {
                 {/* Central Hub */}
                 <div className="w-32 h-32 rounded-full bg-background border border-borderBase shadow-sm flex items-center justify-center z-10 transition-transform duration-500">
                   <div className="text-center">
-                    <span className="text-accent font-bold text-3xl">{steps[activeStep].num}</span>
+                    <span className="text-accent font-bold text-3xl">{(activeStep + 1).toString().padStart(2, "0")}</span>
                   </div>
                 </div>
 
                 {/* Rotating Indicator */}
                 <div 
                   className="absolute inset-0 transition-transform duration-700 ease-in-out"
-                  style={{ transform: `rotate(${activeStep * 90}deg)` }}
+                  style={{ transform: `rotate(${activeStep * rotationDegrees}deg)` }}
                 >
-                  <div className="absolute top-0 left-1/2 -ml-6 -mt-6 w-12 h-12 rounded-full bg-accent flex items-center justify-center shadow-lg shadow-accent/30 text-white transform -rotate-0">
-                    {activeStep === 0 && <MessageSquare className="w-5 h-5" />}
-                    {activeStep === 1 && <LayoutTemplate className="w-5 h-5 -rotate-90" />}
-                    {activeStep === 2 && <Code className="w-5 h-5 rotate-180" />}
-                    {activeStep === 3 && <Headset className="w-5 h-5 rotate-90" />}
+                  <div 
+                    className="absolute top-0 left-1/2 -ml-6 -mt-6 w-12 h-12 rounded-full bg-accent flex items-center justify-center shadow-lg shadow-accent/30 text-white transform transition-transform duration-700 ease-in-out"
+                    style={{ transform: `rotate(-${activeStep * rotationDegrees}deg)` }}
+                  >
+                    {(() => {
+                       const ActiveIcon = ICONS[activeStep % ICONS.length];
+                       return <ActiveIcon className="w-5 h-5" />;
+                    })()}
                   </div>
                 </div>
               </div>

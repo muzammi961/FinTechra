@@ -1,9 +1,16 @@
-import { ArrowRight, LayoutDashboard, ShoppingCart, Bot, BarChart4, Calculator, FileText } from "lucide-react";
+import { useState } from "react";
+import { ArrowRight, LayoutDashboard, ShoppingCart, Bot, BarChart4, Calculator, FileText, X } from "lucide-react";
+import { useData } from "../context/DataContext";
 
-function MockupCard({ title, icon: Icon, color, delay }: { title: string, icon: React.ElementType, color: string, delay: string }) {
+const ICONS = [LayoutDashboard, ShoppingCart, Bot, BarChart4, Calculator, FileText];
+
+function MockupCard({ title, icon: Icon, color, delay, onClick }: { title: string, icon: React.ElementType, color: string, delay: string, onClick: () => void }) {
   return (
     <div className="group flex flex-col gap-4">
-      <div className={`relative aspect-[4/3] rounded-2xl overflow-hidden bg-card border border-borderBase flex items-center justify-center cursor-pointer transition-all duration-500 hover:border-accent hover:shadow-xl`}>
+      <div 
+        onClick={onClick}
+        className={`relative aspect-[4/3] rounded-2xl overflow-hidden bg-card border border-borderBase flex items-center justify-center cursor-pointer transition-all duration-500 hover:border-accent hover:shadow-xl`}
+      >
         {/* Animated Background Pattern */}
         <div className="absolute inset-0 opacity-10" style={{
           backgroundImage: 'radial-gradient(circle at 2px 2px, currentColor 1px, transparent 0)',
@@ -37,6 +44,11 @@ function MockupCard({ title, icon: Icon, color, delay }: { title: string, icon: 
 }
 
 export default function Showcase() {
+  const { data } = useData();
+  const content = data.showcase;
+  
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
+
   return (
     <section id="solutions" className="bg-background pt-16 sm:pt-20 lg:pt-28 pb-16 sm:pb-20 lg:pb-28 border-b border-borderBase transition-colors duration-300">
       <div className="max-w-[1440px] mx-auto">
@@ -45,23 +57,55 @@ export default function Showcase() {
             8
           </span>
           <span className="text-[12px] sm:text-[13px] font-medium border border-borderBase text-textSecondary rounded-full px-3 sm:px-4 py-1 sm:py-1.5">
-            Interactive Showcase
+            {content.title}
           </span>
         </div>
 
         <h2 className="hero-heading px-5 sm:px-8 lg:px-12 font-medium leading-[1.08] tracking-[-0.03em] text-text mb-10 sm:mb-14 lg:mb-16 max-w-3xl">
-          See our solutions in action
+          {content.heading}
         </h2>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 px-5 sm:px-8 lg:px-12">
-          <MockupCard title="Modern Business Website" icon={LayoutDashboard} color="#F26522" delay="0ms" />
-          <MockupCard title="E-Commerce Storefront" icon={ShoppingCart} color="#3b82f6" delay="100ms" />
-          <MockupCard title="AI Customer Assistant" icon={Bot} color="#8b5cf6" delay="200ms" />
-          <MockupCard title="Business Analytics Dashboard" icon={BarChart4} color="#10b981" delay="300ms" />
-          <MockupCard title="Accounting Portal" icon={Calculator} color="#f59e0b" delay="400ms" />
-          <MockupCard title="Financial Document Manager" icon={FileText} color="#ef4444" delay="500ms" />
+          {content.items.map((item, index) => {
+            const Icon = ICONS[index % ICONS.length];
+            return (
+              <MockupCard 
+                key={index} 
+                title={item.title} 
+                icon={Icon} 
+                color={item.color} 
+                delay={`${index * 100}ms`} 
+                onClick={() => {
+                  if (item.image) {
+                    setSelectedImage(item.image);
+                  } else {
+                    alert("No demo image provided for this solution. Please add an image URL in the Admin Dashboard.");
+                  }
+                }}
+              />
+            );
+          })}
         </div>
       </div>
+
+      {/* Fullscreen Image Modal */}
+      {selectedImage && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-8 bg-black/80 backdrop-blur-sm transition-opacity" onClick={() => setSelectedImage(null)}>
+          <button 
+            className="absolute top-4 right-4 sm:top-8 sm:right-8 p-2 bg-white/10 hover:bg-white/20 text-white rounded-full transition-colors"
+            onClick={() => setSelectedImage(null)}
+          >
+            <X size={24} />
+          </button>
+          
+          <img 
+            src={selectedImage} 
+            alt="Solution Demo" 
+            className="max-w-full max-h-full object-contain rounded-lg shadow-2xl animate-in zoom-in-95 duration-300"
+            onClick={(e) => e.stopPropagation()} // Prevent closing when clicking the image itself
+          />
+        </div>
+      )}
     </section>
   );
 }

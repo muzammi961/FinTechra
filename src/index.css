@@ -12,7 +12,32 @@ html, body, #root {
   width: 100%;
 }
 
+:root {
+  --bg-color: #ffffff;
+  --text-color: #111827; /* gray-900 */
+  --text-secondary: #4b5563; /* gray-600 */
+  --card-bg: #ffffff;
+  --accent-color: #F26522; /* Orange */
+  --accent-hover: #e05a1a;
+  --border-color: #e5e7eb; /* gray-200 */
+  --header-bg: #ffffff;
+}
+
+html.dark:root {
+  --bg-color: #0B1120; /* Deep navy / near black */
+  --text-color: #f3f4f6; /* gray-100 */
+  --text-secondary: #9ca3af; /* gray-400 */
+  --card-bg: #1e293b; /* slate-800 */
+  --accent-color: #F26522; /* Orange */
+  --accent-hover: #e05a1a;
+  --border-color: #334155; /* slate-700 */
+  --header-bg: #0f172a;
+}
+
 body {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  transition: background-color 0.3s ease, color 0.3s ease;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }

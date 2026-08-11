@@ -1,8 +1,6 @@
-import { ArrowRight, MessageCircle } from "lucide-react";
+import { MessageCircle } from "lucide-react";
 import Navbar from "./Navbar";
 import HeroShader from "./HeroShader";
-
-const EASE = "cubic-bezier(0.25,0.1,0.25,1)";
 
 export default function Hero() {
   return (
@@ -29,28 +27,6 @@ export default function Hero() {
         </p>
 
         <div className="mt-8 sm:mt-10 flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-5">
-          <button className="group flex items-center gap-3 bg-accent hover:bg-accentHover text-white text-[13px] sm:text-[14px] font-medium rounded-full pl-5 sm:pl-6 pr-2 py-2 transition-colors duration-300">
-            <span className="flex flex-col overflow-hidden h-[20px]">
-              <span
-                className="flex flex-col transition-transform duration-500 group-hover:-translate-y-1/2"
-                style={{ transitionTimingFunction: EASE }}
-              >
-                <span className="block h-[20px] leading-[20px]">
-                  Get Started
-                </span>
-                <span className="block h-[20px] leading-[20px]">
-                  Get Started
-                </span>
-              </span>
-            </span>
-            <span
-              className="w-7 h-7 sm:w-8 sm:h-8 bg-white rounded-full flex items-center justify-center shrink-0 transition-transform duration-500 group-hover:-rotate-45"
-              style={{ transitionTimingFunction: EASE }}
-            >
-              <ArrowRight size={14} className="text-accent" />
-            </span>
-          </button>
-
           <a href="#services" className="text-[14px] font-medium text-text hover:text-accent transition-colors px-2">
             Explore Services
           </a>

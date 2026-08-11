@@ -105,21 +105,56 @@ export default function AdminDashboard() {
 
   if (!isAuthenticated) {
     return (
-      <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 px-4 sm:px-6 lg:px-8 font-sans">
-        <div className="max-w-md w-full mx-auto">
-          <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">Admin CMS Login</h2>
-          <div className="bg-white mt-8 py-8 px-4 sm:px-10 shadow sm:rounded-lg">
+      <div className="min-h-screen bg-background flex flex-col justify-center py-12 px-4 sm:px-6 lg:px-8 font-sans relative overflow-hidden">
+        {/* Animated Background Gradients */}
+        <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-accent/20 rounded-full blur-[100px] animate-pulse pointer-events-none"></div>
+        <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-accent/20 rounded-full blur-[100px] animate-pulse pointer-events-none" style={{ animationDelay: '1s' }}></div>
+
+        <div className="max-w-md w-full mx-auto relative z-10">
+          <div className="text-center mb-10">
+            <h2 className="text-4xl font-extrabold text-text tracking-tight">FinTechra CMS</h2>
+            <p className="mt-3 text-textSecondary text-lg">Secure Admin Portal</p>
+          </div>
+
+          <div className="bg-card/60 backdrop-blur-xl border border-borderBase py-10 px-6 sm:px-10 shadow-2xl rounded-2xl relative overflow-hidden">
+            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-accent to-transparent"></div>
+            
             <form className="space-y-6" onSubmit={handleLogin}>
               <div>
-                <label className="block text-sm font-medium text-gray-700">Email address</label>
-                <input type="email" required value={email} onChange={e => setEmail(e.target.value)} className="mt-1 block w-full border-gray-300 rounded-md p-2 border" />
+                <label className="block text-sm font-semibold text-text mb-1">Email address</label>
+                <input 
+                  type="email" 
+                  required 
+                  value={email} 
+                  onChange={e => setEmail(e.target.value)} 
+                  className="block w-full border-borderBase bg-background/50 backdrop-blur-sm text-text rounded-lg p-3 border focus:ring-2 focus:ring-accent focus:border-transparent outline-none transition-all" 
+                  placeholder="admin@fintechra.com"
+                />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700">Password</label>
-                <input type="password" required value={password} onChange={e => setPassword(e.target.value)} className="mt-1 block w-full border-gray-300 rounded-md p-2 border" />
+                <label className="block text-sm font-semibold text-text mb-1">Password</label>
+                <input 
+                  type="password" 
+                  required 
+                  value={password} 
+                  onChange={e => setPassword(e.target.value)} 
+                  className="block w-full border-borderBase bg-background/50 backdrop-blur-sm text-text rounded-lg p-3 border focus:ring-2 focus:ring-accent focus:border-transparent outline-none transition-all" 
+                  placeholder="••••••••"
+                />
               </div>
-              {error && <p className="text-red-500 text-sm">{error}</p>}
-              <button type="submit" className="w-full py-2 px-4 bg-[#F58220] text-white rounded-md">Sign in</button>
+              
+              {error && (
+                <div className="bg-red-500/10 border border-red-500/50 text-red-500 text-sm p-3 rounded-lg flex items-center justify-center">
+                  {error}
+                </div>
+              )}
+              
+              <button 
+                type="submit" 
+                className="w-full py-3 px-4 bg-accent text-white font-semibold rounded-lg hover:bg-accentHover shadow-lg shadow-accent/30 transition-all transform hover:-translate-y-0.5"
+              >
+                Sign In
+              </button>
             </form>
           </div>
         </div>
@@ -132,17 +167,17 @@ export default function AdminDashboard() {
       case "Theme":
         return (
           <div className="space-y-6">
-            <h3 className="text-lg font-medium text-gray-900 mb-4">Theme Colors</h3>
+            <h3 className="text-lg font-medium text-text mb-4">Theme Colors</h3>
             {['light', 'dark'].map((mode) => (
               <div key={mode}>
-                <h4 className="text-sm font-bold text-gray-500 uppercase mb-3">{mode} Mode</h4>
+                <h4 className="text-sm font-bold text-textSecondary uppercase mb-3">{mode} Mode</h4>
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                   {['background', 'text', 'accent'].map((key) => (
                     <div key={key}>
-                      <label className="block text-xs font-medium text-gray-700 capitalize">{key}</label>
+                      <label className="block text-xs font-medium text-text capitalize">{key}</label>
                       <div className="mt-1 flex gap-2">
                         <input type="color" value={(formData.theme as any)[mode][key]} onChange={e => updateField(['theme', mode, key], e.target.value)} className="h-8 w-8 cursor-pointer" />
-                        <input type="text" value={(formData.theme as any)[mode][key]} onChange={e => updateField(['theme', mode, key], e.target.value)} className="block w-full border-gray-300 border p-1 rounded" />
+                        <input type="text" value={(formData.theme as any)[mode][key]} onChange={e => updateField(['theme', mode, key], e.target.value)} className="block w-full border-borderBase border p-1 rounded" />
                       </div>
                     </div>
                   ))}
@@ -155,12 +190,12 @@ export default function AdminDashboard() {
         return (
           <div className="space-y-4">
             <h3 className="text-lg font-medium">Animations Setting</h3>
-            <p className="text-sm text-gray-500 mb-4">Choose the primary color for the Hero WebGL background animation and the Loading screen.</p>
+            <p className="text-sm text-textSecondary mb-4">Choose the primary color for the Hero WebGL background animation and the Loading screen.</p>
             <div>
-              <label className="block text-sm font-medium text-gray-700">Primary Animation Color</label>
+              <label className="block text-sm font-medium text-text">Primary Animation Color</label>
               <div className="mt-1 flex items-center gap-2">
-                <input type="color" value={formData.animations?.primaryColor || "#F58220"} onChange={e => updateField(['animations', 'primaryColor'], e.target.value)} className="h-10 w-10 cursor-pointer border-gray-300 rounded" />
-                <input type="text" value={formData.animations?.primaryColor || "#F58220"} onChange={e => updateField(['animations', 'primaryColor'], e.target.value)} className="border-gray-300 border p-2 rounded w-48" />
+                <input type="color" value={formData.animations?.primaryColor || "#F58220"} onChange={e => updateField(['animations', 'primaryColor'], e.target.value)} className="h-10 w-10 cursor-pointer border-borderBase rounded" />
+                <input type="text" value={formData.animations?.primaryColor || "#F58220"} onChange={e => updateField(['animations', 'primaryColor'], e.target.value)} className="border-borderBase border p-2 rounded w-48" />
               </div>
             </div>
           </div>
@@ -171,13 +206,13 @@ export default function AdminDashboard() {
             <h3 className="text-lg font-medium">Hero Section</h3>
             {['subtitle', 'title'].map((key) => (
               <div key={key}>
-                <label className="block text-sm font-medium text-gray-700 capitalize">{key}</label>
-                <input type="text" value={(formData.hero as any)[key]} onChange={e => updateField(['hero', key], e.target.value)} className="mt-1 block w-full border-gray-300 border p-2 rounded" />
+                <label className="block text-sm font-medium text-text capitalize">{key}</label>
+                <input type="text" value={(formData.hero as any)[key]} onChange={e => updateField(['hero', key], e.target.value)} className="mt-1 block w-full border-borderBase border p-2 rounded" />
               </div>
             ))}
             <div>
-              <label className="block text-sm font-medium text-gray-700">Description</label>
-              <textarea rows={3} value={formData.hero.description} onChange={e => updateField(['hero', 'description'], e.target.value)} className="mt-1 block w-full border-gray-300 border p-2 rounded" />
+              <label className="block text-sm font-medium text-text">Description</label>
+              <textarea rows={3} value={formData.hero.description} onChange={e => updateField(['hero', 'description'], e.target.value)} className="mt-1 block w-full border-borderBase border p-2 rounded" />
             </div>
           </div>
         );
@@ -190,12 +225,12 @@ export default function AdminDashboard() {
             
             <div className="flex justify-between items-center mt-4">
               <h4 className="font-medium">Service Cards</h4>
-              <button onClick={() => addArrayItem(['services', 'items'], {title: "New Service", description: "Description here"})} className="flex items-center gap-1 text-sm bg-blue-50 text-blue-600 px-3 py-1 rounded hover:bg-blue-100">
+              <button onClick={() => addArrayItem(['services', 'items'], {title: "New Service", description: "Description here"})} className="flex items-center gap-1 text-sm bg-accent/10 text-accent px-3 py-1 rounded hover:bg-accent/20">
                 <Plus size={16} /> Add Card
               </button>
             </div>
             {formData.services.items.map((item, idx) => (
-              <div key={idx} className="p-4 border rounded bg-gray-50 space-y-2 relative">
+              <div key={idx} className="p-4 border rounded bg-background space-y-2 relative">
                 <button onClick={() => removeArrayItem(['services', 'items'], idx)} className="absolute top-2 right-2 text-red-500 hover:text-red-700"><Trash2 size={18} /></button>
                 <input type="text" value={item.title} onChange={e => updateField(['services', 'items', idx.toString(), 'title'], e.target.value)} className="block w-full border p-2 rounded pr-8" placeholder="Title" />
                 <textarea value={item.description} onChange={e => updateField(['services', 'items', idx.toString(), 'description'], e.target.value)} className="block w-full border p-2 rounded" placeholder="Description" />
@@ -214,7 +249,7 @@ export default function AdminDashboard() {
             
             <div className="flex justify-between items-center mt-4">
               <h4 className="font-medium">Stats</h4>
-              <button onClick={() => addArrayItem(['about', 'stats'], {value: "100+", label: "New Stat"})} className="flex items-center gap-1 text-sm bg-blue-50 text-blue-600 px-3 py-1 rounded hover:bg-blue-100">
+              <button onClick={() => addArrayItem(['about', 'stats'], {value: "100+", label: "New Stat"})} className="flex items-center gap-1 text-sm bg-accent/10 text-accent px-3 py-1 rounded hover:bg-accent/20">
                 <Plus size={16} /> Add Stat
               </button>
             </div>
@@ -240,7 +275,7 @@ export default function AdminDashboard() {
             
             <div className="flex justify-between items-center mt-4">
               <h4 className="font-medium">List Items</h4>
-              <button onClick={() => addArrayItem([keyMap, 'items'], "New Item")} className="flex items-center gap-1 text-sm bg-blue-50 text-blue-600 px-3 py-1 rounded hover:bg-blue-100">
+              <button onClick={() => addArrayItem([keyMap, 'items'], "New Item")} className="flex items-center gap-1 text-sm bg-accent/10 text-accent px-3 py-1 rounded hover:bg-accent/20">
                 <Plus size={16} /> Add Item
               </button>
             </div>
@@ -268,12 +303,12 @@ export default function AdminDashboard() {
             
             <div className="flex justify-between items-center mt-4">
               <h4 className="font-medium">Cards</h4>
-              <button onClick={() => addArrayItem([hwKey, listKey], {title: "New Item", description: "Description here"})} className="flex items-center gap-1 text-sm bg-blue-50 text-blue-600 px-3 py-1 rounded hover:bg-blue-100">
+              <button onClick={() => addArrayItem([hwKey, listKey], {title: "New Item", description: "Description here"})} className="flex items-center gap-1 text-sm bg-accent/10 text-accent px-3 py-1 rounded hover:bg-accent/20">
                 <Plus size={16} /> Add Card
               </button>
             </div>
             {hwData[listKey].map((item: any, idx: number) => (
-              <div key={idx} className="p-4 border rounded bg-gray-50 space-y-2 relative">
+              <div key={idx} className="p-4 border rounded bg-background space-y-2 relative">
                 <button onClick={() => removeArrayItem([hwKey, listKey], idx)} className="absolute top-2 right-2 text-red-500 hover:text-red-700"><Trash2 size={18} /></button>
                 <input type="text" value={item.title} onChange={e => updateField([hwKey, listKey, idx.toString(), 'title'], e.target.value)} className="block w-full border p-2 rounded pr-8" />
                 <textarea value={item.description} onChange={e => updateField([hwKey, listKey, idx.toString(), 'description'], e.target.value)} className="block w-full border p-2 rounded" />
@@ -291,17 +326,15 @@ export default function AdminDashboard() {
             
             <div className="flex justify-between items-center mt-4">
               <h4 className="font-medium">Industries</h4>
-              <button onClick={() => addArrayItem(['whoWeServe', 'industries'], { title: "New Industry", description: "Description..." })} className="flex items-center gap-1 text-sm bg-blue-50 text-blue-600 px-3 py-1 rounded hover:bg-blue-100">
+              <button onClick={() => addArrayItem(['whoWeServe', 'industries'], { title: "New Industry", description: "Description..." })} className="flex items-center gap-1 text-sm bg-accent/10 text-accent px-3 py-1 rounded hover:bg-accent/20">
                 <Plus size={16} /> Add Industry
               </button>
             </div>
             {formData.whoWeServe.industries.map((industry, idx) => (
-              <div key={idx} className="flex gap-2 relative">
-                <div className="flex-1 space-y-2">
-                  <input type="text" value={industry.title} onChange={e => updateField(['whoWeServe', 'industries', idx.toString(), 'title'], e.target.value)} className="block w-full border p-2 rounded" placeholder="Title" />
-                  <textarea value={industry.description} onChange={e => updateField(['whoWeServe', 'industries', idx.toString(), 'description'], e.target.value)} className="block w-full border p-2 rounded" placeholder="Description" rows={2} />
-                </div>
-                <button onClick={() => removeArrayItem(['whoWeServe', 'industries'], idx)} className="text-red-500 hover:text-red-700 shrink-0 self-start mt-2"><Trash2 size={18} /></button>
+              <div key={idx} className="p-4 border rounded bg-background space-y-2 relative">
+                <button onClick={() => removeArrayItem(['whoWeServe', 'industries'], idx)} className="absolute top-2 right-2 text-red-500 hover:text-red-700"><Trash2 size={18} /></button>
+                <input type="text" value={industry.title} onChange={e => updateField(['whoWeServe', 'industries', idx.toString(), 'title'], e.target.value)} className="block w-full border p-2 rounded pr-8" placeholder="Title" />
+                <textarea value={industry.description} onChange={e => updateField(['whoWeServe', 'industries', idx.toString(), 'description'], e.target.value)} className="block w-full border p-2 rounded" placeholder="Description" rows={2} />
               </div>
             ))}
           </div>
@@ -315,15 +348,15 @@ export default function AdminDashboard() {
             
             <div className="flex justify-between items-center mt-4">
               <h4 className="font-medium">Showcase Cards</h4>
-              <button onClick={() => addArrayItem(['showcase', 'items'], {title: "New Showcase", color: "#3b82f6", image: ""})} className="flex items-center gap-1 text-sm bg-blue-50 text-blue-600 px-3 py-1 rounded hover:bg-blue-100">
+              <button onClick={() => addArrayItem(['showcase', 'items'], {title: "New Showcase", color: "#3b82f6", image: ""})} className="flex items-center gap-1 text-sm bg-accent/10 text-accent px-3 py-1 rounded hover:bg-accent/20">
                 <Plus size={16} /> Add Card
               </button>
             </div>
             {formData.showcase.items.map((item, idx) => (
-              <div key={idx} className="p-4 border rounded bg-gray-50 space-y-3 relative">
+              <div key={idx} className="p-4 border rounded bg-background space-y-3 relative">
                 <button onClick={() => removeArrayItem(['showcase', 'items'], idx)} className="absolute top-2 right-2 text-red-500 hover:text-red-700"><Trash2 size={18} /></button>
                 <div className="flex items-center gap-4 pr-8">
-                  <input type="color" value={item.color} onChange={e => updateField(['showcase', 'items', idx.toString(), 'color'], e.target.value)} className="h-10 w-10 shrink-0 border border-gray-300" />
+                  <input type="color" value={item.color} onChange={e => updateField(['showcase', 'items', idx.toString(), 'color'], e.target.value)} className="h-10 w-10 shrink-0 border border-borderBase" />
                   <input type="text" value={item.title} onChange={e => updateField(['showcase', 'items', idx.toString(), 'title'], e.target.value)} className="block w-full border p-2 rounded flex-1" placeholder="Title" />
                 </div>
                 <input type="text" value={item.image || ""} onChange={e => updateField(['showcase', 'items', idx.toString(), 'image'], e.target.value)} className="block w-full border p-2 rounded" placeholder="Image URL (e.g., https://example.com/demo.png)" />
@@ -348,22 +381,22 @@ export default function AdminDashboard() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 font-sans text-gray-900 flex flex-col">
-      <nav className="bg-white shadow-sm shrink-0 sticky top-0 z-50">
+    <div className="h-screen bg-background font-sans text-text flex flex-col">
+      <nav className="bg-card shadow-sm shrink-0 sticky top-0 z-50">
         <div className="w-full px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between h-16">
             <div className="flex items-center gap-4">
               <button 
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                className="md:hidden text-gray-500 hover:text-gray-700 focus:outline-none"
+                className="md:hidden text-textSecondary hover:text-text focus:outline-none"
               >
                 {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
               </button>
-              <h1 className="text-lg sm:text-xl font-bold text-gray-900">FinTechra CMS</h1>
+              <h1 className="text-lg sm:text-xl font-bold text-text">FinTechra CMS</h1>
             </div>
             <div className="flex items-center gap-3 sm:gap-4">
-              <a href="/" target="_blank" className="text-sm font-medium text-blue-600 hover:text-blue-800">View Site</a>
-              <button onClick={handleLogout} className="text-sm font-medium text-gray-500 hover:text-gray-700">Logout</button>
+              <a href="/" target="_blank" className="text-sm font-medium text-accent hover:text-accentHover">View Site</a>
+              <button onClick={handleLogout} className="text-sm font-medium text-textSecondary hover:text-text">Logout</button>
             </div>
           </div>
         </div>
@@ -372,13 +405,13 @@ export default function AdminDashboard() {
       <div className="flex-1 flex overflow-hidden flex-col md:flex-row relative">
         {/* Mobile Navigation Dropdown */}
         {isMobileMenuOpen && (
-          <div className="absolute top-0 left-0 right-0 bg-white border-b border-gray-200 z-40 md:hidden shadow-lg max-h-64 overflow-y-auto">
+          <div className="absolute top-0 left-0 right-0 bg-card border-b border-borderBase z-40 md:hidden shadow-lg max-h-64 overflow-y-auto">
             <nav className="p-2 space-y-1">
               {tabs.map(tab => (
                 <button
                   key={tab}
                   onClick={() => { setActiveTab(tab); setIsMobileMenuOpen(false); }}
-                  className={`w-full text-left px-3 py-3 rounded-md text-sm font-medium ${activeTab === tab ? 'bg-orange-100 text-[#F58220]' : 'text-gray-600 hover:bg-gray-50'}`}
+                  className={`w-full text-left px-3 py-3 rounded-md text-sm font-medium ${activeTab === tab ? 'bg-accent/10 text-accent' : 'text-textSecondary hover:bg-background'}`}
                 >
                   {tab}
                 </button>
@@ -388,13 +421,13 @@ export default function AdminDashboard() {
         )}
 
         {/* Desktop Sidebar Navigation */}
-        <div className="w-64 bg-white border-r border-gray-200 overflow-y-auto shrink-0 hidden md:block">
+        <div className="w-64 bg-card border-r border-borderBase overflow-y-auto shrink-0 hidden md:block">
           <nav className="p-4 space-y-1">
             {tabs.map(tab => (
               <button
                 key={tab}
                 onClick={() => setActiveTab(tab)}
-                className={`w-full text-left px-3 py-2 rounded-md text-sm font-medium transition-colors ${activeTab === tab ? 'bg-orange-100 text-[#F58220]' : 'text-gray-600 hover:bg-gray-50'}`}
+                className={`w-full text-left px-3 py-2 rounded-md text-sm font-medium transition-colors ${activeTab === tab ? 'bg-accent/10 text-accent' : 'text-textSecondary hover:bg-background'}`}
               >
                 {tab}
               </button>
@@ -404,13 +437,13 @@ export default function AdminDashboard() {
 
         {/* Main Content Area */}
         <div className="flex-1 p-4 sm:p-6 overflow-y-auto w-full">
-          <div className="max-w-4xl mx-auto bg-white shadow rounded-lg p-4 sm:p-6">
-            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 pb-4 border-b border-gray-200 gap-4">
-              <h2 className="text-xl sm:text-2xl font-bold text-gray-900">{activeTab} Settings</h2>
+          <div className="max-w-4xl mx-auto bg-card shadow rounded-lg p-4 sm:p-6">
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 pb-4 border-b border-borderBase gap-4">
+              <h2 className="text-xl sm:text-2xl font-bold text-text">{activeTab} Settings</h2>
               <button 
                 onClick={handleSave} 
                 disabled={isSaving} 
-                className="w-full sm:w-auto px-4 py-2 bg-[#F58220] text-white rounded-md hover:bg-[#e05a1a] transition-colors disabled:opacity-50"
+                className="w-full sm:w-auto px-4 py-2 bg-accent text-white text-white rounded-md hover:bg-accentHover transition-colors disabled:opacity-50"
               >
                 {isSaving ? "Saving..." : "Save All Changes"}
               </button>

@@ -50,13 +50,13 @@ export default function Navbar() {
 
   return (
     <>
-      <div className="max-w-[1440px] mx-auto p-2 sm:p-3 relative z-50">
-        <nav className="bg-card rounded-full p-[5px] flex items-center justify-between border border-borderBase shadow-sm">
+      <div className="fixed top-0 left-0 right-0 z-50 max-w-[1440px] mx-auto p-2 sm:p-3">
+        <nav className="bg-card/80 backdrop-blur-md rounded-full p-[5px] flex items-center justify-between border border-borderBase shadow-sm">
           {/* LEFT */}
           <div className="flex items-center gap-6 pl-0">
             <div className="flex items-center gap-3">
               <a href="#home" onClick={(e) => handleScroll(e, 'home')} className="flex items-center gap-2">
-                <img src="/logo.png" alt="FinTechra Solutions" className="h-8 object-contain" />
+                <img src="/logo.png" alt="FinTechra Solutions" className="h-8 w-8 object-cover rounded-full shadow-sm" />
               </a>
               <div className="hidden lg:flex items-center gap-6 ml-4">
                 {NAV_LINKS.map((link) => (

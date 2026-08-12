@@ -1,16 +1,35 @@
 import { Shader, Swirl, ChromaFlow, FlutedGlass, FilmGrain } from "shaders/react";
 import { useData } from "../context/DataContext";
+import { useState, useEffect } from "react";
 
 export default function HeroShader() {
   const { data } = useData();
-  const accentColor = data.animations?.primaryColor || "#ff5f03";
+  const [isDark, setIsDark] = useState(false);
+
+  useEffect(() => {
+    const root = window.document.documentElement;
+    setIsDark(root.classList.contains('dark'));
+    const observer = new MutationObserver(() => {
+      setIsDark(root.classList.contains('dark'));
+    });
+    observer.observe(root, { attributes: true, attributeFilter: ['class'] });
+    return () => observer.disconnect();
+  }, []);
+
+  const accentColor = isDark 
+    ? (data.animations?.dark?.primaryColor || "#F58220")
+    : (data.animations?.light?.primaryColor || "#F58220");
+
+  const bgColor = isDark
+    ? (data.animations?.dark?.backgroundColor || "#0B1120")
+    : (data.animations?.light?.backgroundColor || "#ffffff");
 
   return (
     <div className="absolute inset-0 z-10 pointer-events-none">
       <Shader style={{ width: "100%", height: "100%" }}>
-        <Swirl colorA="#ffffff" colorB="#f0f0f0" detail={1.7} />
+        <Swirl colorA={bgColor} colorB={bgColor} detail={1.7} />
         <ChromaFlow
-          baseColor="#ffffff"
+          baseColor={bgColor}
           downColor={accentColor}
           leftColor={accentColor}
           rightColor={accentColor}

@@ -57,7 +57,9 @@ export default function LoadingEntry({ onComplete }: { onComplete: () => void })
       className={`fixed inset-0 z-[100] flex flex-col items-center justify-center bg-background transition-opacity duration-500 ease-in-out overflow-hidden ${
         step === 4 ? 'opacity-0 pointer-events-none' : 'opacity-100'
       }`}
-      style={{ '--accent-color': data.animations?.primaryColor || '#F58220' } as React.CSSProperties}
+      style={{
+        '--accent-color': 'var(--hero-primary, #F58220)'
+      } as React.CSSProperties}
     >
       {/* Step 1 & 2: Subtle Particle / Digital Lines Background */}
       {!prefersReducedMotion && (

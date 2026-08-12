@@ -1,4 +1,3 @@
-import { MessageCircle } from "lucide-react";
 import Navbar from "./Navbar";
 import HeroShader from "./HeroShader";
 import { useData } from "../context/DataContext";
@@ -16,16 +15,16 @@ export default function Hero() {
 
       <div className="flex-1" />
 
-      <div className="relative z-20 max-w-[1440px] mx-auto w-full px-5 sm:px-8 lg:px-12 pb-14 sm:pb-16 lg:pb-20">
-        <p className="text-[14px] sm:text-[16px] text-textSecondary font-medium tracking-wide mb-4">
+      <div className="relative z-20 max-w-[1440px] mx-auto w-full px-5 sm:px-8 lg:px-12 pb-14 sm:pb-16 lg:pb-20" style={{ fontFamily: 'var(--hero-font)' }}>
+        <p className="text-[14px] sm:text-[16px] font-medium tracking-wide mb-4" style={{ color: 'var(--hero-text)' }}>
           {data.hero.subtitle}
         </p>
 
-        <h1 className="hero-heading font-medium leading-[1.08] tracking-[-0.03em] text-text mb-6">
+        <h1 className="hero-heading font-medium leading-[1.08] tracking-[-0.03em] mb-6" style={{ color: 'var(--hero-text)' }}>
           {data.hero.title}
         </h1>
 
-        <p className="text-[16px] sm:text-[18px] text-textSecondary max-w-2xl leading-relaxed">
+        <p className="text-[16px] sm:text-[18px] max-w-2xl leading-relaxed opacity-90" style={{ color: 'var(--hero-text)' }}>
           {data.hero.description}
         </p>
 

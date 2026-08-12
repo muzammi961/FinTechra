@@ -21,7 +21,7 @@ export default function Footer() {
               Digital, AI and financial solutions designed to help businesses move forward.
             </p>
             <div className="flex gap-4 mt-2">
-              <a href={`tel:${data.contact.phone1}`} className="w-10 h-10 rounded-full bg-background border border-borderBase flex items-center justify-center text-textSecondary hover:text-accent hover:border-accent transition-colors" aria-label="Call Us">
+              <a href={`tel:${data.contact.phone1?.replace(/[^0-9+]/g, '')}`} className="w-10 h-10 rounded-full bg-background border border-borderBase flex items-center justify-center text-textSecondary hover:text-accent hover:border-accent transition-colors" aria-label="Call Us">
                 <Phone size={18} />
               </a>
               <a href={`mailto:${data.contact.email1}`} className="w-10 h-10 rounded-full bg-background border border-borderBase flex items-center justify-center text-textSecondary hover:text-accent hover:border-accent transition-colors" aria-label="Email Us">
@@ -62,13 +62,13 @@ export default function Footer() {
             <h4 className="text-[13px] font-bold tracking-widest text-text mb-6 uppercase">Contact</h4>
             <ul className="flex flex-col gap-5">
               <li>
-                <a href={`tel:${data.contact.phone1}`} className="group flex items-center gap-3">
+                <a href={`tel:${data.contact.phone1?.replace(/[^0-9+]/g, '')}`} className="group flex items-center gap-3">
                   <span className="text-[15px] text-textSecondary group-hover:text-accent transition-colors">{data.contact.phone1}</span>
                   <ArrowRight size={14} className="text-accent opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all" />
                 </a>
               </li>
               <li>
-                <a href={`tel:${data.contact.phone2}`} className="group flex items-center gap-3">
+                <a href={`tel:${data.contact.phone2?.replace(/[^0-9+]/g, '')}`} className="group flex items-center gap-3">
                   <span className="text-[15px] text-textSecondary group-hover:text-accent transition-colors">{data.contact.phone2}</span>
                   <ArrowRight size={14} className="text-accent opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all" />
                 </a>

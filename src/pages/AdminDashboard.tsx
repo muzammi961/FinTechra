@@ -16,7 +16,7 @@ export default function AdminDashboard() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const tabs = [
-    "Theme", "Animations", "Hero", "Services", "About", "Digital Solutions", 
+    "Theme", "Animations", "Hero", "Navbar", "Services", "About", "Digital Solutions", 
     "Financial Services", "Why Choose Us", "How We Work", "Who We Serve", "Showcase", "Contact"
   ];
 
@@ -171,13 +171,13 @@ export default function AdminDashboard() {
             {['light', 'dark'].map((mode) => (
               <div key={mode}>
                 <h4 className="text-sm font-bold text-textSecondary uppercase mb-3">{mode} Mode</h4>
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                  {['background', 'text', 'accent'].map((key) => (
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+                  {['background', 'text', 'textSecondary', 'accent'].map((key) => (
                     <div key={key}>
-                      <label className="block text-xs font-medium text-text capitalize">{key}</label>
+                      <label className="block text-xs font-medium text-text capitalize">{key === 'textSecondary' ? 'Small Text' : key}</label>
                       <div className="mt-1 flex gap-2">
-                        <input type="color" value={(formData.theme as any)[mode][key]} onChange={e => updateField(['theme', mode, key], e.target.value)} className="h-8 w-8 cursor-pointer" />
-                        <input type="text" value={(formData.theme as any)[mode][key]} onChange={e => updateField(['theme', mode, key], e.target.value)} className="block w-full border-borderBase border p-1 rounded" />
+                        <input type="color" value={(formData.theme as any)[mode][key] || '#000000'} onChange={e => updateField(['theme', mode, key], e.target.value)} className="h-8 w-8 cursor-pointer" />
+                        <input type="text" value={(formData.theme as any)[mode][key] || ''} onChange={e => updateField(['theme', mode, key], e.target.value)} className="block w-full border-borderBase border p-1 rounded bg-background text-text" />
                       </div>
                     </div>
                   ))}
@@ -188,16 +188,76 @@ export default function AdminDashboard() {
         );
       case "Animations":
         return (
-          <div className="space-y-4">
-            <h3 className="text-lg font-medium">Animations Setting</h3>
-            <p className="text-sm text-textSecondary mb-4">Choose the primary color for the Hero WebGL background animation and the Loading screen.</p>
-            <div>
-              <label className="block text-sm font-medium text-text">Primary Animation Color</label>
-              <div className="mt-1 flex items-center gap-2">
-                <input type="color" value={formData.animations?.primaryColor || "#F58220"} onChange={e => updateField(['animations', 'primaryColor'], e.target.value)} className="h-10 w-10 cursor-pointer border-borderBase rounded" />
-                <input type="text" value={formData.animations?.primaryColor || "#F58220"} onChange={e => updateField(['animations', 'primaryColor'], e.target.value)} className="border-borderBase border p-2 rounded w-48" />
+          <div className="space-y-6">
+            <h3 className="text-lg font-medium">Animations & Home Page Styling</h3>
+            <p className="text-sm text-textSecondary mb-4">Choose the styling for the Home Page text and WebGL background animation.</p>
+            
+            <div className="mb-6">
+              <label className="block text-sm font-medium text-text">Hero Font Family</label>
+              <div className="mt-1">
+                <select value={formData.animations?.fontFamily || ""} onChange={e => updateField(['animations', 'fontFamily'], e.target.value)} className="bg-background text-text border-borderBase border p-2 rounded w-full">
+                  <option value="">Default Theme Font</option>
+                  <option value="'Inter', sans-serif">Inter</option>
+                  <option value="'Roboto', sans-serif">Roboto</option>
+                  <option value="'Outfit', sans-serif">Outfit</option>
+                  <option value="'Playfair Display', serif">Playfair Display</option>
+                  <option value="'Montserrat', sans-serif">Montserrat</option>
+                  <option value="'Poppins', sans-serif">Poppins</option>
+                  <option value="'Space Grotesk', sans-serif">Space Grotesk</option>
+                  <option value="'Plus Jakarta Sans', sans-serif">Plus Jakarta Sans</option>
+                </select>
               </div>
             </div>
+
+            {['light', 'dark'].map((mode) => (
+              <div key={mode} className="border-t border-borderBase pt-4">
+                <h4 className="text-sm font-bold text-textSecondary uppercase mb-3">{mode} Mode</h4>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-xs font-medium text-text">Animation Background Color</label>
+                    <div className="mt-1 flex items-center gap-2">
+                      <input type="color" value={(formData.animations as any)?.[mode]?.backgroundColor || (mode === 'dark' ? "#0B1120" : "#ffffff")} onChange={e => updateField(['animations', mode, 'backgroundColor'], e.target.value)} className="h-10 w-10 cursor-pointer border-borderBase rounded" />
+                      <input type="text" value={(formData.animations as any)?.[mode]?.backgroundColor || (mode === 'dark' ? "#0B1120" : "#ffffff")} onChange={e => updateField(['animations', mode, 'backgroundColor'], e.target.value)} className="bg-background text-text border-borderBase border p-2 rounded w-48" />
+                    </div>
+                  </div>
+                  <div>
+                    <label className="block text-xs font-medium text-text">Primary Animation Color</label>
+                    <div className="mt-1 flex items-center gap-2">
+                      <input type="color" value={(formData.animations as any)?.[mode]?.primaryColor || "#F58220"} onChange={e => updateField(['animations', mode, 'primaryColor'], e.target.value)} className="h-10 w-10 cursor-pointer border-borderBase rounded" />
+                      <input type="text" value={(formData.animations as any)?.[mode]?.primaryColor || "#F58220"} onChange={e => updateField(['animations', mode, 'primaryColor'], e.target.value)} className="bg-background text-text border-borderBase border p-2 rounded w-48" />
+                    </div>
+                  </div>
+                  <div>
+                    <label className="block text-xs font-medium text-text">Hero Text Color</label>
+                    <div className="mt-1 flex items-center gap-2">
+                      <input type="color" value={(formData.animations as any)?.[mode]?.textColor || "#111827"} onChange={e => updateField(['animations', mode, 'textColor'], e.target.value)} className="h-10 w-10 cursor-pointer border-borderBase rounded" />
+                      <input type="text" value={(formData.animations as any)?.[mode]?.textColor || ""} onChange={e => updateField(['animations', mode, 'textColor'], e.target.value)} className="bg-background text-text border-borderBase border p-2 rounded w-48" placeholder="e.g. #ffffff or empty" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        );
+      case "Navbar":
+        return (
+          <div className="space-y-6">
+            <h3 className="text-lg font-medium">Navbar Customization</h3>
+            <p className="text-sm text-textSecondary mb-4">Customize the text colors used inside the top navigation bar for both Light and Dark modes.</p>
+            {['light', 'dark'].map((mode) => (
+              <div key={mode}>
+                <h4 className="text-sm font-bold text-textSecondary uppercase mb-3">{mode} Mode</h4>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-xs font-medium text-text">Navbar Text Color</label>
+                    <div className="mt-1 flex items-center gap-2">
+                      <input type="color" value={(formData.navbar as any)?.[mode]?.textColor || "#4b5563"} onChange={e => updateField(['navbar', mode, 'textColor'], e.target.value)} className="h-10 w-10 cursor-pointer border-borderBase rounded" />
+                      <input type="text" value={(formData.navbar as any)?.[mode]?.textColor || ""} onChange={e => updateField(['navbar', mode, 'textColor'], e.target.value)} className="bg-background text-text border-borderBase border p-2 rounded w-48" placeholder="e.g. #4b5563 or empty for default" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))}
           </div>
         );
       case "Hero":

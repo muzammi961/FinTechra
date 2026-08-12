@@ -64,7 +64,8 @@ export default function Navbar() {
                     key={link}
                     href={`#${link.toLowerCase().replace(' ', '-')}`}
                     onClick={(e) => handleScroll(e, link)}
-                    className="text-[14px] text-textSecondary hover:text-text transition-colors duration-300"
+                    className="text-[14px] hover:opacity-80 transition-opacity duration-300"
+                    style={{ color: 'var(--navbar-text)' }}
                   >
                     {link}
                   </a>
@@ -122,7 +123,8 @@ export default function Navbar() {
                 key={link}
                 href={`#${link.toLowerCase().replace(' ', '-')}`}
                 onClick={(e) => handleScroll(e, link)}
-                className="text-[16px] font-medium text-text py-3 border-b border-borderBase/50 last:border-0"
+                className="text-[16px] font-medium py-3 border-b border-borderBase/50 last:border-0"
+                style={{ color: 'var(--navbar-text)' }}
               >
                 {link}
               </a>

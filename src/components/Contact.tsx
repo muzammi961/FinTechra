@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Phone, Mail, MessageCircle, ArrowRight } from "lucide-react";
+import { Phone, Mail, ArrowRight } from "lucide-react";
 import { useData } from "../context/DataContext";
 
 export default function Contact() {
@@ -12,11 +12,43 @@ export default function Contact() {
     message: ''
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const subject = `New Inquiry from ${formData.name} - ${formData.service}`;
-    const body = `Name: ${formData.name}\nPhone: ${formData.phone}\nEmail: ${formData.email}\nService: ${formData.service}\n\nMessage:\n${formData.message}`;
-    window.location.href = `mailto:${data.contact.email1}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    setIsSubmitting(true);
+    setSubmitStatus('idle');
+
+    try {
+      const response = await fetch(`https://formsubmit.co/ajax/${data.contact.email1}`, {
+        method: "POST",
+        headers: { 
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+        },
+        body: JSON.stringify({
+            name: formData.name,
+            phone: formData.phone,
+            email: formData.email,
+            service: formData.service,
+            message: formData.message,
+            _subject: `New Inquiry from ${data.hero.title} Website`
+        })
+      });
+
+      if (response.ok) {
+        setSubmitStatus('success');
+        setFormData({ name: '', phone: '', email: '', service: '', message: '' });
+      } else {
+        setSubmitStatus('error');
+      }
+    } catch (error) {
+      console.error(error);
+      setSubmitStatus('error');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -39,7 +71,7 @@ export default function Contact() {
               Start a Conversation
             </a>
             <a 
-              href="https://wa.me/9778726809"
+              href={`https://wa.me/${data.contact.phone1?.replace(/[^0-9]/g, '')}`}
               target="_blank"
               rel="noreferrer"
               className="flex items-center justify-center gap-2 bg-[#25D366]/10 hover:bg-[#25D366]/20 text-[#25D366] text-[15px] font-medium rounded-full px-8 py-3.5 transition-colors duration-300"
@@ -60,9 +92,7 @@ export default function Contact() {
           
           <div className="w-full lg:w-1/3">
             <div className="flex items-center gap-3 mb-6">
-              <span className="w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-text text-background flex items-center justify-center text-[11px] sm:text-[12px] font-semibold shrink-0">
-                9
-              </span>
+              
               <span className="text-[12px] sm:text-[13px] font-medium border border-borderBase text-textSecondary rounded-full px-3 sm:px-4 py-1 sm:py-1.5">
                 Contact Us
               </span>
@@ -76,13 +106,13 @@ export default function Contact() {
               <div>
                 <h4 className="text-[13px] font-bold tracking-widest text-textSecondary uppercase mb-4">Phone</h4>
                 <div className="flex flex-col gap-3">
-                  <a href={`tel:${data.contact.phone1}`} className="flex items-center gap-3 text-text hover:text-accent transition-colors text-[17px] font-medium group">
+                  <a href={`tel:${data.contact.phone1?.replace(/[^0-9+]/g, '')}`} className="flex items-center gap-3 text-text hover:text-accent transition-colors text-[17px] font-medium group">
                     <div className="w-10 h-10 rounded-full bg-background border border-borderBase flex items-center justify-center group-hover:border-accent transition-colors">
                       <Phone size={18} className="text-accent" />
                     </div>
                     {data.contact.phone1}
                   </a>
-                  <a href={`tel:${data.contact.phone2}`} className="flex items-center gap-3 text-text hover:text-accent transition-colors text-[17px] font-medium group">
+                  <a href={`tel:${data.contact.phone2?.replace(/[^0-9+]/g, '')}`} className="flex items-center gap-3 text-text hover:text-accent transition-colors text-[17px] font-medium group">
                     <div className="w-10 h-10 rounded-full bg-background border border-borderBase flex items-center justify-center group-hover:border-accent transition-colors">
                       <Phone size={18} className="text-accent" />
                     </div>
@@ -148,12 +178,19 @@ export default function Contact() {
                 <textarea id="message" rows={4} value={formData.message} onChange={(e) => setFormData({...formData, message: e.target.value})} required className="w-full bg-card border border-borderBase rounded-xl px-4 py-3 text-text focus:outline-none focus:border-accent transition-colors resize-none" placeholder="Tell us about your project or requirements..."></textarea>
               </div>
 
-              <button type="submit" className="group flex items-center gap-3 bg-accent hover:bg-accentHover text-white text-[15px] font-medium rounded-full pl-8 pr-3 py-3 w-full sm:w-auto justify-between sm:justify-start transition-colors duration-300">
-                <span>Send Message</span>
-                <span className="w-8 h-8 bg-white rounded-full flex items-center justify-center shrink-0">
-                  <ArrowRight size={16} className="text-accent group-hover:translate-x-0.5 transition-transform" />
-                </span>
+              <button type="submit" disabled={isSubmitting} className="group flex items-center gap-3 bg-accent hover:bg-accentHover text-white text-[15px] font-medium rounded-full pl-8 pr-3 py-3 w-full sm:w-auto justify-between sm:justify-start transition-colors duration-300 disabled:opacity-70 disabled:cursor-not-allowed">
+                <span>{isSubmitting ? 'Sending...' : 'Send Message'}</span>
+                <div className="w-9 h-9 rounded-full bg-white/20 flex items-center justify-center group-hover:bg-white/30 transition-colors shrink-0">
+                  <ArrowRight size={16} className="text-white group-hover:translate-x-1 transition-transform" />
+                </div>
               </button>
+              
+              {submitStatus === 'success' && (
+                <p className="mt-4 text-sm font-medium text-green-500">Message sent successfully! We will get back to you soon.</p>
+              )}
+              {submitStatus === 'error' && (
+                <p className="mt-4 text-sm font-medium text-red-500">Failed to send message. Please try again later or contact us directly.</p>
+              )}
             </form>
           </div>
 

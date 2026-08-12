@@ -4,6 +4,7 @@ import type { ReactNode } from 'react';
 export type ThemeColors = {
   background: string;
   text: string;
+  textSecondary?: string;
   accent: string;
 };
 
@@ -13,7 +14,13 @@ export type ContentData = {
     dark: ThemeColors;
   };
   animations: {
-    primaryColor: string;
+    fontFamily?: string;
+    light?: { primaryColor?: string; textColor?: string; backgroundColor?: string };
+    dark?: { primaryColor?: string; textColor?: string; backgroundColor?: string };
+  };
+  navbar?: {
+    light: { textColor?: string };
+    dark: { textColor?: string };
   };
   hero: {
     subtitle: string;
@@ -76,10 +83,18 @@ export type ContentData = {
 
 const defaultData: ContentData = {
   theme: {
-    light: { background: "#ffffff", text: "#1a1a1a", accent: "#F58220" },
-    dark: { background: "#000B18", text: "#ffffff", accent: "#F58220" }
+    light: { background: "#ffffff", text: "#1a1a1a", textSecondary: "#4b5563", accent: "#F58220" },
+    dark: { background: "#000B18", text: "#ffffff", textSecondary: "#9ca3af", accent: "#F58220" }
   },
-  animations: { primaryColor: "#F58220" },
+  animations: {
+    fontFamily: "",
+    light: { primaryColor: "#F58220", textColor: "", backgroundColor: "#ffffff" },
+    dark: { primaryColor: "#F58220", textColor: "", backgroundColor: "#0B1120" }
+  },
+  navbar: {
+    light: { textColor: "" },
+    dark: { textColor: "" }
+  },
   hero: { subtitle: "", title: "", description: "" },
   services: { section_title: "", section_description: "", items: [] },
   about: { title: "", heading: "", description1: "", description2: "", stats: [] },
@@ -108,25 +123,75 @@ export function DataProvider({ children }: { children: ReactNode }) {
       .then(res => res.json())
       .then((json: ContentData) => {
         setData({ ...defaultData, ...json }); // Merge in case JSON is missing fields
-        applyThemeVariables(json.theme);
+        applyThemeVariables(json);
         setIsLoaded(true);
       })
       .catch(err => console.error("Failed to load content.json:", err));
   }, []);
 
   useEffect(() => {
-    if (isLoaded) applyThemeVariables(data.theme);
-  }, [data.theme, isLoaded]);
+    if (isLoaded) applyThemeVariables(data);
+  }, [data.theme, data.navbar, isLoaded]);
 
-  const applyThemeVariables = (theme: ContentData['theme']) => {
+  const applyThemeVariables = (contentData: ContentData) => {
+    const { theme, navbar } = contentData;
     if (!theme || !theme.light) return;
     document.documentElement.style.setProperty('--dynamic-bg-light', theme.light.background);
     document.documentElement.style.setProperty('--dynamic-text-light', theme.light.text);
+    if (theme.light.textSecondary) document.documentElement.style.setProperty('--dynamic-textSecondary-light', theme.light.textSecondary);
     document.documentElement.style.setProperty('--dynamic-accent-light', theme.light.accent);
 
-    document.documentElement.style.setProperty('--dynamic-bg-dark', theme.dark.background);
-    document.documentElement.style.setProperty('--dynamic-text-dark', theme.dark.text);
-    document.documentElement.style.setProperty('--dynamic-accent-dark', theme.dark.accent);
+    if (theme.dark) {
+      document.documentElement.style.setProperty('--dynamic-bg-dark', theme.dark.background);
+      document.documentElement.style.setProperty('--dynamic-text-dark', theme.dark.text);
+      if (theme.dark.textSecondary) document.documentElement.style.setProperty('--dynamic-textSecondary-dark', theme.dark.textSecondary);
+      document.documentElement.style.setProperty('--dynamic-accent-dark', theme.dark.accent);
+    }
+    
+    
+    // Navbar
+    if (navbar?.light?.textColor) {
+      document.documentElement.style.setProperty('--dynamic-navbar-text-light', navbar.light.textColor);
+    } else {
+      document.documentElement.style.removeProperty('--dynamic-navbar-text-light');
+    }
+    
+    if (navbar?.dark?.textColor) {
+      document.documentElement.style.setProperty('--dynamic-navbar-text-dark', navbar.dark.textColor);
+    } else {
+      document.documentElement.style.removeProperty('--dynamic-navbar-text-dark');
+    }
+    
+    // Animations & Hero
+    if (contentData.animations?.fontFamily) {
+      document.documentElement.style.setProperty('--dynamic-hero-font', contentData.animations.fontFamily);
+    } else {
+      document.documentElement.style.removeProperty('--dynamic-hero-font');
+    }
+    
+    if (contentData.animations?.light?.primaryColor) {
+      document.documentElement.style.setProperty('--dynamic-hero-primary-light', contentData.animations.light.primaryColor);
+    } else {
+      document.documentElement.style.removeProperty('--dynamic-hero-primary-light');
+    }
+    
+    if (contentData.animations?.dark?.primaryColor) {
+      document.documentElement.style.setProperty('--dynamic-hero-primary-dark', contentData.animations.dark.primaryColor);
+    } else {
+      document.documentElement.style.removeProperty('--dynamic-hero-primary-dark');
+    }
+    
+    if (contentData.animations?.light?.textColor) {
+      document.documentElement.style.setProperty('--dynamic-hero-text-light', contentData.animations.light.textColor);
+    } else {
+      document.documentElement.style.removeProperty('--dynamic-hero-text-light');
+    }
+    
+    if (contentData.animations?.dark?.textColor) {
+      document.documentElement.style.setProperty('--dynamic-hero-text-dark', contentData.animations.dark.textColor);
+    } else {
+      document.documentElement.style.removeProperty('--dynamic-hero-text-dark');
+    }
   };
 
   const updateData = async (newData: ContentData) => {

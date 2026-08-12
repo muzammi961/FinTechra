@@ -1,5 +1,6 @@
 import { createContext, useContext, useState, useEffect } from 'react';
 import type { ReactNode } from 'react';
+import fallbackData from '../data/content.json';
 
 export type ThemeColors = {
   background: string;
@@ -81,32 +82,6 @@ export type ContentData = {
   };
 };
 
-const defaultData: ContentData = {
-  theme: {
-    light: { background: "#ffffff", text: "#1a1a1a", textSecondary: "#4b5563", accent: "#F58220" },
-    dark: { background: "#000B18", text: "#ffffff", textSecondary: "#9ca3af", accent: "#F58220" }
-  },
-  animations: {
-    fontFamily: "",
-    light: { primaryColor: "#F58220", textColor: "", backgroundColor: "#ffffff" },
-    dark: { primaryColor: "#F58220", textColor: "", backgroundColor: "#0B1120" }
-  },
-  navbar: {
-    light: { textColor: "" },
-    dark: { textColor: "" }
-  },
-  hero: { subtitle: "", title: "", description: "" },
-  services: { section_title: "", section_description: "", items: [] },
-  about: { title: "", heading: "", description1: "", description2: "", stats: [] },
-  digitalSolutions: { title: "", heading: "", description: "", items: [] },
-  financialServices: { title: "", heading: "", description: "", items: [] },
-  whyChooseUs: { title: "", heading: "", description: "", features: [] },
-  howWeWork: { title: "", heading: "", steps: [] },
-  whoWeServe: { title: "", heading: "", description: "", industries: [] },
-  showcase: { title: "", heading: "", items: [] },
-  contact: { phone1: "", phone2: "", email1: "", email2: "" }
-};
-
 type DataContextType = {
   data: ContentData;
   updateData: (newData: ContentData) => Promise<boolean>;
@@ -115,23 +90,50 @@ type DataContextType = {
 const DataContext = createContext<DataContextType | undefined>(undefined);
 
 export function DataProvider({ children }: { children: ReactNode }) {
-  const [data, setData] = useState<ContentData>(defaultData);
+  const [data, setData] = useState<ContentData>(fallbackData as ContentData);
   const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
-    fetch('/src/data/content.json')
-      .then(res => res.json())
-      .then((json: ContentData) => {
-        setData({ ...defaultData, ...json }); // Merge in case JSON is missing fields
-        applyThemeVariables(json);
-        setIsLoaded(true);
+    const rawBinId = import.meta.env.VITE_JSONBIN_ID;
+    const rawKey = import.meta.env.VITE_JSONBIN_KEY;
+    const binId = rawBinId && String(rawBinId) !== 'undefined' ? String(rawBinId).trim() : '';
+    const key = rawKey && String(rawKey) !== 'undefined' ? String(rawKey).trim() : '';
+
+    if (binId && key) {
+      fetch(`https://api.jsonbin.io/v3/b/${binId}/latest`, {
+        headers: { 'X-Access-Key': key }
       })
-      .catch(err => console.error("Failed to load content.json:", err));
+        .then(res => {
+          if (!res.ok) throw new Error(`HTTP Error: ${res.status}`);
+          return res.json();
+        })
+        .then(response => {
+          if (response.record) {
+            const json = response.record as ContentData;
+            setData({ ...(fallbackData as ContentData), ...json });
+            applyThemeVariables(json);
+            setIsLoaded(true);
+          } else {
+            throw new Error('No record found in JSONBin response');
+          }
+        })
+        .catch(err => {
+          console.error("Failed to load JSONBin content, using local fallback:", err);
+          setData(fallbackData as ContentData);
+          applyThemeVariables(fallbackData as ContentData);
+          setIsLoaded(true);
+        });
+    } else {
+      console.log("No JSONBin credentials found, using local fallback.");
+      setData(fallbackData as ContentData);
+      applyThemeVariables(fallbackData as ContentData);
+      setIsLoaded(true);
+    }
   }, []);
 
   useEffect(() => {
     if (isLoaded) applyThemeVariables(data);
-  }, [data.theme, data.navbar, isLoaded]);
+  }, [data.theme, data.navbar, data.animations, isLoaded]);
 
   const applyThemeVariables = (contentData: ContentData) => {
     const { theme, navbar } = contentData;
@@ -196,14 +198,32 @@ export function DataProvider({ children }: { children: ReactNode }) {
 
   const updateData = async (newData: ContentData) => {
     try {
-      const response = await fetch('/api/content', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+      const rawBinId = import.meta.env.VITE_JSONBIN_ID;
+      const rawKey = import.meta.env.VITE_JSONBIN_KEY;
+      const binId = rawBinId && String(rawBinId) !== 'undefined' ? String(rawBinId).trim() : '';
+      const key = rawKey && String(rawKey) !== 'undefined' ? String(rawKey).trim() : '';
+      
+      const url = binId 
+        ? `https://api.jsonbin.io/v3/b/${binId}` 
+        : '/api/content';
+
+      const headers: Record<string, string> = { 'Content-Type': 'application/json' };
+      if (binId && key) {
+        headers['X-Access-Key'] = key;
+      }
+
+      const response = await fetch(url, {
+        method: binId ? 'PUT' : 'POST',
+        headers,
         body: JSON.stringify(newData)
       });
+      
       if (response.ok) {
         setData(newData);
         return true;
+      } else {
+        const errText = await response.text();
+        console.error("Save response error:", errText);
       }
       return false;
     } catch (err) {

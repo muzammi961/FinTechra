@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ArrowRight, LayoutDashboard, ShoppingCart, Bot, BarChart4, Calculator, FileText, X } from "lucide-react";
+import { ArrowRight, LayoutDashboard, ShoppingCart, Bot, BarChart4, Calculator, FileText, X, AlertCircle } from "lucide-react";
 import { useData } from "../context/DataContext";
 
 const ICONS = [LayoutDashboard, ShoppingCart, Bot, BarChart4, Calculator, FileText];
@@ -45,9 +45,15 @@ function MockupCard({ title, icon: Icon, color, delay, onClick }: { title: strin
 
 export default function Showcase() {
   const { data } = useData();
-  const content = data.showcase;
-  
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const [toast, setToast] = useState<{message: string} | null>(null);
+
+  const showToast = (message: string) => {
+    setToast({ message });
+    setTimeout(() => setToast(null), 3000);
+  };
+
+  const content = data.showcase;
 
   return (
     <section id="solutions" className="bg-background pt-16 sm:pt-20 lg:pt-28 pb-16 sm:pb-20 lg:pb-28 border-b border-borderBase transition-colors duration-300">
@@ -77,7 +83,7 @@ export default function Showcase() {
                   if (item.image) {
                     setSelectedImage(item.image);
                   } else {
-                    alert("No demo image provided for this solution. Please add an image URL in the Admin Dashboard.");
+                    showToast("No demo image provided for this solution. Please add an image URL in the Admin Dashboard.");
                   }
                 }}
               />
@@ -102,6 +108,14 @@ export default function Showcase() {
             className="max-w-full max-h-full object-contain rounded-lg shadow-2xl animate-in zoom-in-95 duration-300"
             onClick={(e) => e.stopPropagation()} // Prevent closing when clicking the image itself
           />
+        </div>
+      )}
+      
+      {/* Toast Notification */}
+      {toast && (
+        <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 flex items-center gap-3 px-6 py-4 rounded-xl shadow-lg border border-red-500/20 bg-red-500/10 text-red-400 backdrop-blur-md animate-fade-in transition-all duration-300">
+          <AlertCircle size={20} className="text-red-500 shrink-0" />
+          <span className="font-medium text-[15px]">{toast.message}</span>
         </div>
       )}
     </section>

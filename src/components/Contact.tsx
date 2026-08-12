@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Phone, Mail, ArrowRight } from "lucide-react";
+import { Phone, Mail, ArrowRight, CheckCircle } from "lucide-react";
 import { useData } from "../context/DataContext";
 
 export default function Contact() {
@@ -142,7 +142,27 @@ export default function Contact() {
           </div>
 
           <div className="w-full lg:w-2/3">
-            <form className="bg-background border border-borderBase rounded-3xl p-6 sm:p-10 shadow-sm" onSubmit={handleSubmit}>
+            <div className="bg-background border border-borderBase rounded-3xl p-6 sm:p-10 shadow-sm relative overflow-hidden transition-all duration-500">
+              {submitStatus === 'success' ? (
+                <div className="flex flex-col items-center justify-center py-12 sm:py-20 text-center animate-fade-in">
+                  <div className="w-24 h-24 bg-green-500/10 rounded-full flex items-center justify-center mb-6 relative">
+                    <div className="absolute inset-0 bg-green-500/20 rounded-full animate-ping opacity-75" style={{ animationDuration: '2s' }}></div>
+                    <CheckCircle className="text-green-500 w-12 h-12 relative z-10" />
+                  </div>
+                  <h3 className="text-2xl sm:text-3xl font-bold text-text mb-4">Message Sent!</h3>
+                  <p className="text-[16px] sm:text-[18px] text-textSecondary max-w-md mx-auto mb-10 leading-relaxed">
+                    Thank you for reaching out to us. Our team will review your inquiry and get back to you shortly.
+                  </p>
+                  <button 
+                    onClick={() => setSubmitStatus('idle')} 
+                    type="button"
+                    className="bg-card border border-borderBase hover:border-accent hover:text-accent text-text font-medium px-8 py-3 rounded-full transition-all duration-300 shadow-sm"
+                  >
+                    Send Another Message
+                  </button>
+                </div>
+              ) : (
+                <form onSubmit={handleSubmit}>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                 <div className="flex flex-col gap-2">
                   <label htmlFor="name" className="text-sm font-medium text-text">Full Name</label>
@@ -185,13 +205,14 @@ export default function Contact() {
                 </div>
               </button>
               
-              {submitStatus === 'success' && (
-                <p className="mt-4 text-sm font-medium text-green-500">Message sent successfully! We will get back to you soon.</p>
-              )}
               {submitStatus === 'error' && (
-                <p className="mt-4 text-sm font-medium text-red-500">Failed to send message. Please try again later or contact us directly.</p>
+                <p className="mt-5 text-sm font-medium text-red-500 bg-red-500/10 p-3 rounded-xl border border-red-500/20 text-center">
+                  Failed to send message. Please try again later or contact us directly.
+                </p>
               )}
             </form>
+              )}
+            </div>
           </div>
 
         </div>

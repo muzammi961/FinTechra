@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useData } from "../context/DataContext";
-import { Trash2, Plus, Menu, X } from "lucide-react";
+import { Trash2, Plus, Menu, X, CheckCircle, AlertCircle } from "lucide-react";
 
 export default function AdminDashboard() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -11,6 +11,12 @@ export default function AdminDashboard() {
   const { data, updateData } = useData();
   const [formData, setFormData] = useState(data);
   const [isSaving, setIsSaving] = useState(false);
+  const [toast, setToast] = useState<{message: string, type: 'success' | 'error'} | null>(null);
+  
+  const showToast = (message: string, type: 'success' | 'error') => {
+    setToast({ message, type });
+    setTimeout(() => setToast(null), 3000);
+  };
   
   const [activeTab, setActiveTab] = useState("Theme");
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -45,9 +51,9 @@ export default function AdminDashboard() {
     const success = await updateData(formData);
     setIsSaving(false);
     if (success) {
-      alert("Settings saved successfully!");
+      showToast("Settings saved successfully!", "success");
     } else {
-      alert("Failed to save settings. Make sure you are running the dev server.");
+      showToast("Failed to save settings. Make sure you are running the dev server.", "error");
     }
   };
 
@@ -512,6 +518,16 @@ export default function AdminDashboard() {
           </div>
         </div>
       </div>
+      
+      {/* Toast Notification */}
+      {toast && (
+        <div className={`fixed bottom-6 right-6 z-50 flex items-center gap-3 px-6 py-4 rounded-xl shadow-lg border animate-fade-in transition-all duration-300 ${
+          toast.type === 'success' ? 'bg-green-500/10 border-green-500/20 text-green-400' : 'bg-red-500/10 border-red-500/20 text-red-400'
+        } backdrop-blur-md`}>
+          {toast.type === 'success' ? <CheckCircle size={20} className="text-green-500" /> : <AlertCircle size={20} className="text-red-500" />}
+          <span className="font-medium text-[15px]">{toast.message}</span>
+        </div>
+      )}
     </div>
   );
 }

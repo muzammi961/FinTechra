@@ -1,12 +1,13 @@
 import { useEffect, useState } from 'react';
-import { Moon, Sun, Monitor } from 'lucide-react';
+import { Moon, Sun } from 'lucide-react';
 
-type Theme = 'light' | 'dark' | 'system';
+type Theme = 'light' | 'dark';
 
 export default function ThemeToggle() {
   const [theme, setTheme] = useState<Theme>(() => {
     const saved = localStorage.getItem('theme') as Theme;
-    return saved || 'system';
+    if (saved === 'light' || saved === 'dark') return saved;
+    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
   });
 
   const [isOpen, setIsOpen] = useState(false);
@@ -14,29 +15,8 @@ export default function ThemeToggle() {
   useEffect(() => {
     const root = window.document.documentElement;
     root.classList.remove('light', 'dark');
-
-    let effectiveTheme = theme;
-    if (theme === 'system') {
-      effectiveTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-    }
-
-    root.classList.add(effectiveTheme);
+    root.classList.add(theme);
     localStorage.setItem('theme', theme);
-  }, [theme]);
-
-  // Listen for system preference changes
-  useEffect(() => {
-    if (theme !== 'system') return;
-    
-    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-    const handleChange = (e: MediaQueryListEvent) => {
-      const root = window.document.documentElement;
-      root.classList.remove('light', 'dark');
-      root.classList.add(e.matches ? 'dark' : 'light');
-    };
-    
-    mediaQuery.addEventListener('change', handleChange);
-    return () => mediaQuery.removeEventListener('change', handleChange);
   }, [theme]);
 
   return (
@@ -48,10 +28,8 @@ export default function ThemeToggle() {
       >
         {theme === 'light' ? (
           <Sun size={18} className="text-gray-900 dark:text-white" />
-        ) : theme === 'dark' ? (
-          <Moon size={18} className="text-gray-900 dark:text-white" />
         ) : (
-          <Monitor size={18} className="text-gray-900 dark:text-white" />
+          <Moon size={18} className="text-gray-900 dark:text-white" />
         )}
       </button>
 
@@ -73,12 +51,6 @@ export default function ThemeToggle() {
               className={`w-full flex items-center gap-3 px-4 py-2 text-sm transition-colors ${theme === 'dark' ? 'text-accent font-medium' : 'text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-slate-700'}`}
             >
               <Moon size={16} /> Dark
-            </button>
-            <button
-              onClick={() => { setTheme('system'); setIsOpen(false); }}
-              className={`w-full flex items-center gap-3 px-4 py-2 text-sm transition-colors ${theme === 'system' ? 'text-accent font-medium' : 'text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-slate-700'}`}
-            >
-              <Monitor size={16} /> System
             </button>
           </div>
         </>

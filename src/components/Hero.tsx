@@ -40,7 +40,11 @@ export default function Hero() {
             rel="noreferrer"
             className="flex items-center gap-2 sm:gap-3 bg-[#25D366]/10 hover:bg-[#25D366]/20 text-[#25D366] rounded-full px-4 sm:px-5 py-2.5 transition-colors duration-300"
           >
-            <MessageCircle size={18} />
+              <img
+              src="/whatsapplogo.png"
+              alt="WhatsApp"
+              className="w-[18px] h-[18px] sm:w-[20px] sm:h-[20px] object-contain"/>
+            {/* <MessageCircle size={18} /> */}
             <span className="text-[13px] sm:text-[14px] font-medium">
               Chat on WhatsApp
             </span>

@@ -44,7 +44,12 @@ export default function Contact() {
               rel="noreferrer"
               className="flex items-center justify-center gap-2 bg-[#25D366]/10 hover:bg-[#25D366]/20 text-[#25D366] text-[15px] font-medium rounded-full px-8 py-3.5 transition-colors duration-300"
             >
-              <MessageCircle size={18} />
+                <img
+                src="/whatsapplogo.png"
+                alt="WhatsApp"
+                className="w-[18px] h-[18px] sm:w-[20px] sm:h-[20px] object-contain"
+              />
+              {/* <MessageCircle size={18} /> */}
               WhatsApp Us
             </a>
           </div>

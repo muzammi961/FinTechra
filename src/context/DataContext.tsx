@@ -84,7 +84,7 @@ export type ContentData = {
 
 type DataContextType = {
   data: ContentData;
-  updateData: (newData: ContentData) => Promise<boolean>;
+  updateData: (newData: ContentData) => Promise<{success: boolean, error?: string}>;
 };
 
 const DataContext = createContext<DataContextType | undefined>(undefined);
@@ -196,7 +196,7 @@ export function DataProvider({ children }: { children: ReactNode }) {
     }
   };
 
-  const updateData = async (newData: ContentData) => {
+  const updateData = async (newData: ContentData): Promise<{success: boolean, error?: string}> => {
     try {
       const rawBinId = import.meta.env.VITE_JSONBIN_ID;
       const rawKey = import.meta.env.VITE_JSONBIN_KEY;
@@ -220,15 +220,19 @@ export function DataProvider({ children }: { children: ReactNode }) {
       
       if (response.ok) {
         setData(newData);
-        return true;
+        return { success: true };
       } else {
         const errText = await response.text();
         console.error("Save response error:", errText);
+        if (!binId) {
+           return { success: false, error: "Local save failed. Make sure dev server is running." };
+        } else {
+           return { success: false, error: `Cloud save failed (${response.status}): ${errText.substring(0, 50)}` };
+        }
       }
-      return false;
-    } catch (err) {
+    } catch (err: any) {
       console.error("Failed to save data:", err);
-      return false;
+      return { success: false, error: err.message || "Network error" };
     }
   };
 

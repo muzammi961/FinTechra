@@ -48,12 +48,12 @@ export default function AdminDashboard() {
 
   const handleSave = async () => {
     setIsSaving(true);
-    const success = await updateData(formData);
+    const result = await updateData(formData);
     setIsSaving(false);
-    if (success) {
+    if (result.success) {
       showToast("Settings saved successfully!", "success");
     } else {
-      showToast("Failed to save settings. Make sure you are running the dev server.", "error");
+      showToast(result.error || "Failed to save settings.", "error");
     }
   };
 
